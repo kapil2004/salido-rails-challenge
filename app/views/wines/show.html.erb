@@ -1,0 +1,83 @@
+<%= link_to 'Back to Index', wines_path %>
+
+<h1><%= @wine.name %></h1>
+
+<ul>
+  <li>
+    Description: <%= @wine.description %>
+  </li>
+  <li>
+    Wine.com URL: <%= link_to @wine.url, @wine.url %>
+  </li>
+  <li>
+    Vintage: <%= @wine.vintage %>
+  </li>
+  <li>
+    Price Range: <%= "#{number_to_currency @wine.price_min} - #{number_to_currency @wine.price_max}" %>
+  </li>
+  <li>
+    Retail Price: <%= number_to_currency @wine.price_retail %>
+  </li>
+</ul>
+
+<% if @wine.appellation %>
+  <h2>Appellation</h2>
+  <ul>  
+    <li>
+      Name: <%= link_to @wine.appellation.name, @wine.appellation.url %>
+    </li>
+    <% if @wine.appellation.region %>
+      <li>
+        Region: <%= link_to @wine.appellation.region.name, @wine.appellation.region.url %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @wine.varietal %>
+  <h2>Varietal</h2>
+  <ul>
+    <li>
+      Name: <%= link_to @wine.varietal.name, @wine.varietal.url %>
+    </li>
+    <% if @wine.varietal.wine_type %>
+      <li>
+        Wine Type: <%= link_to @wine.varietal.wine_type.name, @wine.varietal.wine_type.url %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
+
+<% if @wine.vineyard %>
+  <h2>Vineyard</h2>
+  <ul>
+    <li>
+      Name: <%= link_to @wine.vineyard.name, @wine.vineyard.url %>
+    </li>
+    <li>
+      Latitude: <%= @wine.vineyard.latitude %>
+    </li>
+    <li>
+      Longitude: <%= @wine.vineyard.longitude %>
+    </li>
+    <li>
+      Location URL: <%= link_to @wine.vineyard.geo_url, @wine.vineyard.geo_url %>
+    </li>
+  </ul>
+<% end %>        
+
+<% if @wine.trait_ids.present? %>
+    <h2>Traits</h2>
+    <ul>
+      <% @wine.traits.each do |trait| %>
+        <li><%= raw trait.name %></li>
+      <% end %>
+    </ul>
+<% end %>
+
+
+<br/>
+
+<%= link_to "Edit", edit_wine_path(@wine) %>
+
+

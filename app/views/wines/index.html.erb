@@ -1,0 +1,29 @@
+<h1>Wines</h1>
+
+<table>
+  <tr>
+    <th>Name</th>
+    <th>Appellation</th>
+    <th>Varietal</th>
+    <th>Vineyard</th>
+    <th>Actions</th>
+  </tr>
+  
+  <% @wines.each do |wine| %>
+    <tr>
+      <td><%= link_to wine.name, wine %></td>
+      <td><%= wine.appellation.name if wine.appellation %></td>
+      <td><%= wine.varietal.name if wine.varietal %></td>
+      <td><%= wine.vineyard.name if wine.vineyard %></td>
+      <td><%= link_to "Edit", edit_wine_path(wine) %></td>
+    </tr>
+  <% end %>
+</table>
+
+<br/>
+
+<%= paginate @wines %>
+
+<br/>
+
+<%= link_to "Create New Wine", new_wine_path %>

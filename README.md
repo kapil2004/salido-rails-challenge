@@ -1,46 +1,53 @@
-# Challenge for Rails Engineer
-To better assess a candidates development skills, we provide this following challenge.  You have as much time as you'd like (though we ask that you not spend more than a few hours).
+## Ruby, Rails, Postgres
 
-## Submission Instructions
-1. First, fork this project on github.  You will need to create an account if you don't already have one.
-1. Next, complete the project as described below within your fork.
-1. Finally, push all of your changes to your fork on github and submit a pull request.  You should also email the appropriate address at Salido and your recruiter to let them know you have submitted a solution.  Make sure to include your github username in your email (so we can match people with pull requests).
-1. Include in your README any assumptions or other information you want to communicate.
-1. Include documentation of how to work with API calls.
+This app was developed using Ruby 2.1.5 and Rails 4.2.1.  It uses PostgreSQL for database in development and test environments.  
 
-## Alternate Submission Instructions (if you don't want to publicize completing the challenge)
-1. Clone the repository
-1. Next, complete your project as described below within your local repository
-1. Email a patch file to the appropriate address at Salido and your recruiter to let them know you have submitted a solution.
+## How to run the test suite
 
-## Project Description
-Imagine that Salido has just acquired a new company called ABC Wine Distributors (ABC WD) for the purpose of selling wines through Salido's existing customer-facing mobile app.
+There are a few integration tests for the API portion of this app.  They can be run with the following command: rspec spec
 
-Your job is to prorotype a web-based Inventory Management System.
+## Setup
 
-ABC WD's API: https://api.wine.com You will need to sign up for an account to obtain your own apikey.
+1. Install postgres if it is not already installed.  Make sure it is running.
+1. Run bundle to install all the necessary dependencies.
+1. The database.yml file assumes the database is accessible for the default user.  No username or password is specified in the database.yml file.
+1. Run rake db:create, rake db:migrate to run the migrations.
 
-Here's what your application must do:
+## Downloading Wine.com catalog
 
-1. load ABC products from ABC WD's API into Salido's DB
-1. allow an user to add new products to Salido's DB
-1. allow an user to update existing products in Salido'S DB
-1. expose a list of products in Salido'S DB using an API
-1. allow a user to update existing products in Salido'S DB using an API
-1. demonstrate your API calls using RSpec tests
+1. Run rake salido:get_wine_catalog to download wine.com's wine catalog.  
 
-Your application does not need to:
+## API Calls
 
-1. handle authentication or authorization 
-1. be aesthetically pleasing
+The following two API calls are available:
 
-Your application should be easy to set up and run on Rails 4 or later.  It should not require any for-pay software.
+### To get a list of wines:
 
-## Evaluation
-Evaluation of your submission will be based on the following criteria. 
+get '/api/wines' returns a list of at most 10 wines.  
+The following parameters can be supplied:
+- limit : The default value for limit is 10.  To get N wines in the list, provide parameter 'limit=N'.
+- offset : The default offset is 0.
+- filter : To filter by wine name, provide the filter parameter.  It performs a LIKE match for wine name with the supplied value.
 
-1. Did your application fulfill the basic requirements?
-1. Did you document the method for setting up and running your application?
-1. Did you follow the instructions for submission?
+Example: curl http://localhost:3000/api/wines?limit=3
+         curl http://localhost:3000/api/wines?filter=Pinot
 
-Additionally, reviewers will attempt to assess your familiarity with standard libraries. Reviewers will also assess your experience with object-oriented programming based on how you've structured your submission.
+### To update a wine:
+
+patch '/api/wines/:id'
+
+This request takes a JSON string in request body to update a wine.  The attributes that can be updated are limited via the wine_params method in api/wines_controller.rb file.
+
+Example: curl -X PATCH -d 'wine[name]=New Wine Name' http://localhost:3000/api/wines/1  updates the name of wine with id = 1 to 'New Wine Name'
+
+
+
+
+
+
+
+
+
+
+
+

@@ -1,0 +1,67 @@
+<%= form_for @wine do |f| %>
+  
+  <ul>
+    <li>
+      <%= f.label :name %>:<br/>
+      <%= f.text_field :name %>
+    </li>
+    
+    <li>
+      <%= f.label :description %>:<br/>
+      <%= f.text_area :description %>
+    </li>
+    
+    <li>
+      <%= f.label :url, "Wine.com URL" %>:<br/>
+      <%= f.text_field :url %>
+    </li>
+    
+    <li>
+      <%= f.label :vintage, "Vintage" %>:<br/>
+      <%= f.text_field :vintage %>
+    </li>
+    
+    <li>
+      Price Range:<br/>
+      $<%= f.text_field :price_min %> - $<%= f.text_field :price_max %>
+    </li>
+    
+    <li>
+      <%= f.label :price_retail, "Retail Price" %>:<br/>
+      $<%= f.text_field :price_retail %>
+    </li>
+    
+    <li>
+      <%= f.label :highest_score, "Highest Rating" %>:<br/>
+      <%= f.text_field :highest_score %>
+    </li>
+    
+    <li>
+      <%= f.label :appellation_id, 'Appellation' %>:<br/>
+      <%= f.collection_select :appellation_id, @appellations, :id, :display_name, include_blank: true %>
+    </li>
+    
+    <li>
+      <%= f.label :varietal_id, 'Varietal' %>:<br/>
+      <%= f.collection_select :varietal_id, @varietals, :id, :display_name, include_blank: true %>
+    </li>
+    
+    <li>
+      <%= f.label :vineyard_id, 'Vineyard' %>:<br/>
+      <%= f.collection_select :vineyard_id, @vineyards, :id, :name, include_blank: true %>
+    </li>
+    
+    <li>
+      Traits:<br/>
+      <%= 
+        f.collection_check_boxes :trait_ids, @traits, :id, :name do |b|
+          b.check_box + raw(b.text + "<br/>")
+        end
+      %>
+    </li>    
+    
+  </ul>
+  
+  <%= f.submit %> <%= link_to "Cancel", wines_path %>
+  
+<% end %>
